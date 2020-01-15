@@ -1,0 +1,5 @@
+ALTER TABLE events
+  DROP COLUMN IF EXISTS user_id;
+
+ALTER TABLE general
+  DROP COLUMN IF EXISTS user_id;
