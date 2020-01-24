@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const xss = require('xss');
 
 // Lowercase, uppercase, number
-const REGEX = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/;
+const REGEX = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/; // NEED TO UPDATE THIS REGEX
 
 const UserService = {
   hasUserWithUserName(db, username) {
@@ -10,10 +10,7 @@ const UserService = {
       .from('users')
       .where({username})
       .first()
-      .then(user => {
-        console.log(user);
-        !!user;
-      });
+      .then(user => !!user);
   },
 
   insertUser(db, newUser) {
