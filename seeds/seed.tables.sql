@@ -8,9 +8,9 @@ TRUNCATE
 
 INSERT INTO users (email, username, password)
 VALUES
-  ('test@test.com', 'user1', '$2a$12$4dY7PW6aQRtt50x7dArb0uBfvps.vkeds4WiWxGtW.b23UvpE9hQ2'),
-  ('test1@test.com', 'user2', '$2a$12$4dY7PW6aQRtt50x7dArb0uBfvps.vkeds4WiWxGtW.b23UvpE9hQ2'),
-  ('test2@test.com', 'user3', '$2a$12$4dY7PW6aQRtt50x7dArb0uBfvps.vkeds4WiWxGtW.b23UvpE9hQ2');
+  ('test@test.com', 'user1', '$2a$12$4dY7PW6aQRtt50x7dArb0uBfvps.vkeds4WiWxGtW.b23UvpE9hQ2'), -- Password = Admin123!
+  ('test1@test.com', 'user2', '$2a$12$4dY7PW6aQRtt50x7dArb0uBfvps.vkeds4WiWxGtW.b23UvpE9hQ2'), -- Password = Admin123!
+  ('test2@test.com', 'user3', '$2a$12$4dY7PW6aQRtt50x7dArb0uBfvps.vkeds4WiWxGtW.b23UvpE9hQ2'); -- Password = Admin123!
 
 INSERT INTO events (title, date_of_event, items, user_id)
 VALUES
