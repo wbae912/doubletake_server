@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const xss = require('xss');
 
 // Lowercase, uppercase, number
-const REGEX = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/; // NEED TO UPDATE THIS REGEX
+const REGEX = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[#$@!%&*?])/; // At least one uppercase, lowercase, numerical, AND special character
 
 const UserService = {
   hasUserWithUserName(db, username) {
@@ -32,7 +32,7 @@ const UserService = {
       return 'Password must not start or end with empty spaces';
     }
     if(!REGEX.test(password)) {
-      return 'Password must contain at least one uppercase, lowercase, and numerical character';
+      return 'Password must contain at least one uppercase, lowercase, numerical, and special character';
     }
     return null;
   },
