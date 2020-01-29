@@ -75,7 +75,7 @@ generalRouter
       })
       .catch(next);
   })
-  .patch(requireAuth, (req,res,next) => {
+  .patch(requireAuth, jsonParser, (req,res,next) => {
     const { title, items } = req.body;
     const editList = { title, items };
     
@@ -93,3 +93,5 @@ generalRouter
       })
       .catch(next);
   });
+
+module.exports = generalRouter;
