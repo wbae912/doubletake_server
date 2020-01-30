@@ -50,17 +50,17 @@ eventRouter
   });
 
 eventRouter
-  .route(':/id')
+  .route('/:id')
   .all(requireAuth)
   .all((req,res,next) => {
-    const db = req.app.get('id');
+    const db = req.app.get('db');
     const id = req.params.id;
     const user_id = req.user.id;
 
     EventsService.getSpecificEventForUser(db,id,user_id)
       .then(event => {
         if(!event) {
-          return res.status(400).json({error: 'Event does not exist'});
+          return res.status(404).json({error: 'Event does not exist'});
         }
         res.event = event;
         next();

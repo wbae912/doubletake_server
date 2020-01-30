@@ -60,7 +60,7 @@ generalRouter
     GeneralService.getSpecificListForUser(db,id,user_id)
       .then(list => {
         if(!list) {
-          return res.status(400).json({error: 'List does not exist'});
+          return res.status(404).json({error: 'List does not exist'});
         }
         res.list = list;
         next();
