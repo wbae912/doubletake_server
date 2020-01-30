@@ -51,12 +51,52 @@ eventRouter
 
 eventRouter
   .route(':/id')
-  .get(requireAuth, (req,res,next) => {
-    const db = req.app.get('db');
+  .all(requireAuth)
+  .all((req,res,next) => {
+    const db = req.app.get('id');
     const id = req.params.id;
     const user_id = req.user.id;
 
     EventsService.getSpecificEventForUser(db,id,user_id)
+      .then(event => {
+        if(!event) {
+          return res.status(400).json({error: 'Event does not exist'});
+        }
+        res.event = event;
+        next();
+      })
+      .catch(next);
   })
+  .get((req,res,next) => {
+    return res.status(200).json(serializeEvent(res.event));
+  })
+  .delete((req,res,next) => {
+    const db = req.app.get('db');
+    const id = req.params.id;
+
+    EventsService.deleteEvent(db,id)
+      .then(() => {
+        return res.status(204).end();
+      })
+      .catch(next);
+  })
+  .patch(jsonParser, (req,res,next) => {
+    const { title, date_of_event, items } = req.body;
+    const editEvent = { title, date_of_event, items };
+
+    const numberOfValues = Object.values(editEvent).filter(Boolean).length;
+    if(numberOfValues === 0) {
+      return res.status(400).json({error: 'Request body must contain either title, date_of_event, or items'});
+    }
+
+    const db = req.app.get('db');
+    const id = req.params.id;
+    EventsService.editEvent(db,id,editEvent)
+      .then(() => {
+        return res.status(204).end();
+      })
+      .catch(next);
+  });
+
 
 module.exports = eventRouter;
