@@ -1,9 +1,9 @@
 const EventsService = {
-  getAllEvents(db,id) {
+  getAllEvents(db,user_id) {
     return db
       .select('*')
       .from('events')
-      .where( {id} );
+      .where( {user_id} );
   },
 
   getSpecificEventForUser(db,id,user_id) {

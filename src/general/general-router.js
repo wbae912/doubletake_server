@@ -51,7 +51,8 @@ generalRouter
 
 generalRouter
   .route('/:id')
-  .get(requireAuth, (req,res,next) => {
+  .all(requireAuth)
+  .all((req,res,next) => {
     const db = req.app.get('db');
     const id = req.params.id;
     const user_id = req.user.id;
@@ -61,11 +62,15 @@ generalRouter
         if(!list) {
           return res.status(400).json({error: 'List does not exist'});
         }
-        return res.status(200).json(serializeList(list));
+        res.list = list;
+        next();
       })
       .catch(next);
   })
-  .delete(requireAuth, (req,res,next) => {
+  .get((req,res,next) => {
+    return res.status(200).json(serializeList(res.list));
+  })
+  .delete((req,res,next) => {
     const db = req.app.get('db');
     const id = req.params.id;
 
@@ -75,7 +80,7 @@ generalRouter
       })
       .catch(next);
   })
-  .patch(requireAuth, jsonParser, (req,res,next) => {
+  .patch(jsonParser, (req,res,next) => {
     const { title, items } = req.body;
     const editList = { title, items };
     
