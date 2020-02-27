@@ -7,25 +7,10 @@ const { requireAuth } = require('../middleware/jwt-auth');
 const generalRouter = express.Router();
 const jsonParser = express.json();
 
-const convertItemsToObjects = items => {
-  const itemsArray = [];
-  const sanitizedItems = xss(items);
-
-  const sanitizedItemsArray = sanitizedItems.split('\n');
-
-  for(let i = 0; i < sanitizedItemsArray.length; i++) {
-    itemsArray.push({
-      name: sanitizedItemsArray[i],
-      checked: false
-    });
-  }
-  return itemsArray;  
-};
-
 const serializeList = list => ({
   id: list.id,
   title: xss(list.title),
-  items: convertItemsToObjects(list.items),
+  items: xss(list.items),
   user_id: list.user_id
 });
 
