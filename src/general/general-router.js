@@ -10,7 +10,6 @@ const jsonParser = express.json();
 const serializeList = list => ({
   id: list.id,
   title: xss(list.title),
-  items: xss(list.items),
   user_id: list.user_id
 });
 
@@ -25,17 +24,14 @@ generalRouter
       .catch(next);
   })
   .post(requireAuth, jsonParser, (req,res,next) => {
-    const { title, items } = req.body;
+    const { title } = req.body;
 
     if(!title) {
       return res.status(400).json({error: 'Title is required'});
     }
-    if(!items) {
-      return res.status(400).json({error: 'Items is required'});
-    }
 
     const db = req.app.get('db');
-    const newList = { title, items };
+    const newList = { title };
 
     newList.user_id = req.user.id;
 
@@ -81,8 +77,8 @@ generalRouter
       .catch(next);
   })
   .patch(jsonParser, (req,res,next) => {
-    const { title, items } = req.body;
-    const editList = { title, items };
+    const { title } = req.body;
+    const editList = { title };
     
     const db = req.app.get('db');
     const id = req.params.id;

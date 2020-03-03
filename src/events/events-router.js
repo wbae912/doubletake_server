@@ -11,7 +11,6 @@ const serializeEvent = event => ({
   id: event.id,
   title: xss(event.title),
   date_of_event: event.date_of_event,
-  items: xss(event.items),
   user_id: event.user_id
 });
 
@@ -27,8 +26,8 @@ eventRouter
       .catch(next);
   })
   .post(requireAuth, jsonParser, (req,res,next) => {
-    const { title, date_of_event, items } = req.body;
-    const newEvent = { title, date_of_event, items };
+    const { title, date_of_event } = req.body;
+    const newEvent = { title, date_of_event };
 
     newEvent.user_id = req.user.id;
 
@@ -81,12 +80,12 @@ eventRouter
       .catch(next);
   })
   .patch(jsonParser, (req,res,next) => {
-    const { title, date_of_event, items } = req.body;
-    const editEvent = { title, date_of_event, items };
+    const { title, date_of_event } = req.body;
+    const editEvent = { title, date_of_event };
 
     const numberOfValues = Object.values(editEvent).filter(Boolean).length;
     if(numberOfValues === 0) {
-      return res.status(400).json({error: 'Request body must contain either title, date_of_event, or items'});
+      return res.status(400).json({error: 'Request body must contain either title or date_of_event'});
     }
 
     const db = req.app.get('db');
