@@ -85,7 +85,7 @@ generalRouter
 
     const numberOfValues = Object.values(editList).filter(Boolean).length;
     if(numberOfValues === 0) {
-      return res.status(400).json({error: 'Request body must contain either title or items'});
+      return res.status(400).json({error: 'Request body must contain title'});
     }
 
     GeneralService.editList(db,id,editList)
