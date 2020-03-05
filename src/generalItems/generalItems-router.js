@@ -40,6 +40,7 @@ generalItemsRouter
     }
 
     const newItem = { item };
+    newItem.user_id = req.user.id;
     newItem.list_id = list_id;
 
     GeneralItemsService.addItem(db, newItem)
