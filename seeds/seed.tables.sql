@@ -25,19 +25,24 @@ VALUES
   ('School', 1),
   ('Gym', 2);
 
-INSERT INTO event_items (item, list_id)
+INSERT INTO event_items (item, user_id, list_id)
 VALUES
-  ('Sleeping bag', 1),
-  ('Tent', 1),
-  ('Water', 1),
-  ('Cake', 2),
-  ('Napkins', 2),
-  ('Plates', 2);
+  ('Sleeping bag', 1, 1),
+  ('Tent', 1, 1),
+  ('Water', 1, 1),
+  ('Cake', 2, 2),
+  ('Napkins', 2, 2),
+  ('Plates', 2, 2);
 
-INSERT INTO general_items (item, list_id)
+INSERT INTO general_items (item, user_id, list_id)
 VALUES
-  ('Backpack', 1),
-  ('Paper', 1),
-  ('Pencil', 1);
+  ('Backpack', 1, 2),
+  ('Paper', 1, 2),
+  ('Pencil', 1, 2),
+  ('Laptop', 2, 1),
+  ('Briefcase', 2, 1),
+  ('Protein', 2, 3),
+  ('Duffle Bag', 2, 3),
+  ('Jumprope', 2, 3);
 
 COMMIT;

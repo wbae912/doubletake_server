@@ -10,21 +10,26 @@ const jsonParser = express.json();
 const serializeItem = (item) => ({
   id: item.id,
   item: xss(item.item),
+  checked: item.checked,
+  user_id: item.user_id,
   list_id: item.list_id
 });
 
 generalItemsRouter
-  .route('/:list_id')
+  .route('/')
   .get(requireAuth, (req,res,next) => {
     const db = req.app.get('db');
-    const list_id = req.params.list_id;
+    const user_id = req.user.id;
 
-    GeneralItemsService.getAllItemsByList(db, list_id)
+    GeneralItemsService.getAllItemsByUser(db, user_id)
       .then(items => {
         return res.status(200).json(items.map(serializeItem));
       })
       .catch(next);
-  })
+  });
+
+generalItemsRouter
+  .route('/:list_id')
   .post(requireAuth, jsonParser, (req,res,next) => {
     const db = req.app.get('db');
     const list_id = req.params.list_id;

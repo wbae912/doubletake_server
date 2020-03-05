@@ -1,4 +1,10 @@
 const GeneralItemsService = {
+  getAllItemsByUser(db, user_id) {
+    return db
+      .select('*')
+      .from('general_items')
+      .where( {user_id} );
+  },
   getAllItemsByList(db, list_id) {
     return db
       .select('*')

@@ -1,8 +1,10 @@
 ALTER TABLE event_items
-  DROP COLUMN IF EXISTS list_id;
+  DROP COLUMN IF EXISTS list_id,
+  DROP COLUMN IF EXISTS user_id;
 
 ALTER TABLE general_items
-  DROP COLUMN IF EXISTS list_id;
+  DROP COLUMN IF EXISTS list_id,
+  DROP COLUMN IF EXISTS user_id;
 
 ALTER TABLE events
   DROP COLUMN IF EXISTS user_id;
