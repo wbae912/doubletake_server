@@ -10,21 +10,25 @@ const jsonParser = express.json();
 const serializeItem = item => ({
   id: item.id,
   item: xss(item.item),
+  checked: item.checked,
+  user_id: item.user_id,
   list_id: item.list_id
 });
 
 eventItemsRouter
-  .route('/:list_id')
+  .route('/')
   .get(requireAuth, (req,res,next) => {
     const db = req.app.get('db');
-    const list_id = req.params.list_id;
 
-    EventItemsService.getAllItemsByList(db, list_id)
+    EventItemsService.getAllItemsByUser(db, req.user.id)
       .then(items => {
         return res.status(200).json(items.map(serializeItem));
       })
       .catch(next);
-  })
+  });
+
+eventItemsRouter
+  .route('/:list_id')
   .post(requireAuth, jsonParser, (req,res,next) => {
     const db = req.app.get('db');
     const list_id = req.params.list_id;
@@ -35,6 +39,7 @@ eventItemsRouter
     }
 
     const newItem = { item };
+    newItem.user_id = req.user.id;
     newItem.list_id = list_id;
 
     EventItemsService.addItem(db, newItem)
@@ -71,14 +76,14 @@ eventItemsRouter
   .patch(jsonParser, (req,res,next) => {
     const db = req.app.get('db');
     const id = req.params.id;
-    const { item } = req.body;
+    const { item, checked } = req.body;
 
     const numberOfValues = Object.values(item).filter(Boolean).length;
     if(numberOfValues === 0) {
-      return res.status(400).json({error: 'Item is required in request body'});
+      return res.status(400).json({error: 'Request body must contain item or checked'});
     }
 
-    const editItem = { item };
+    const editItem = { item, checked };
 
     EventItemsService.editItem(db, editItem, id)
       .then(() => {
@@ -89,6 +94,7 @@ eventItemsRouter
   .delete((req,res,next) => {
     const db = req.app.get('db');
     const id = req.params.id;
+    
     EventItemsService.deleteItem(db, id)
       .then(() => {
         return res.status(204).end();

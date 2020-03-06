@@ -1,9 +1,10 @@
 const EventItemsService = {
-  getAllItemsByList(db, list_id) {
+  getAllItemsByUser(db, user_id) {
     return db
       .select('*')
       .from('event_items')
-      .where({ list_id });
+      .where({ user_id })
+      .orderBy('id', 'ASC');
   },
   getSpecificItemInList(db, id, list_id) {
     return db

@@ -81,7 +81,7 @@ generalItemsRouter
 
     const numberOfValues = Object.values(item).filter(Boolean).length;
     if(numberOfValues === 0) {
-      return res.status(400).json({error: 'Request body must contain item'});
+      return res.status(400).json({error: 'Request body must contain item or checked'});
     }
 
     const editItem = { item, checked };
