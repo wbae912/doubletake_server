@@ -55,7 +55,8 @@ generalItemsRouter
 
 generalItemsRouter
   .route('/:list_id/:id')
-  .get(requireAuth, (req,res,next) => {
+  .all(requireAuth)
+  .all((req,res,next) => {
     const db = req.app.get('db');
     const id = req.params.id;
     const list_id = req.params.list_id;
@@ -66,9 +67,12 @@ generalItemsRouter
           return res.status(400).json({error: 'Item does not exist'});
         }
         res.item = item;
-        return res.status(200).json(serializeItem(item));
+        next();
       })
       .catch(next);
+  })
+  .get((req,res,next) => {
+    return res.status(200).json(serializeItem(res.item));
   })
   .patch(requireAuth, jsonParser, (req,res,next) => {
     const db = req.app.get('db');
