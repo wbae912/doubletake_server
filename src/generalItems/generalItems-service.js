@@ -3,7 +3,8 @@ const GeneralItemsService = {
     return db
       .select('*')
       .from('general_items')
-      .where( {user_id} );
+      .where( {user_id} )
+      .orderBy('id', 'ASC');
   },
   getAllItemsByList(db, list_id) {
     return db

@@ -73,14 +73,14 @@ generalItemsRouter
   .patch(requireAuth, jsonParser, (req,res,next) => {
     const db = req.app.get('db');
     const id = req.params.id;
-    const { item } = req.body;
+    const { item, checked } = req.body;
 
     const numberOfValues = Object.values(item).filter(Boolean).length;
     if(numberOfValues === 0) {
       return res.status(400).json({error: 'Request body must contain item'});
     }
 
-    const editItem = { item };
+    const editItem = { item, checked };
 
     GeneralItemsService.editItem(db, editItem, id)
       .then(() => {
