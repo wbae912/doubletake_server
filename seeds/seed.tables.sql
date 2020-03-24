@@ -30,9 +30,9 @@ VALUES
   ('Sleeping bag', 1, 1),
   ('Tent', 1, 1),
   ('Water', 1, 1),
-  ('Cake', 2, 2),
-  ('Napkins', 2, 2),
-  ('Plates', 2, 2);
+  ('Cake', 2, 3),
+  ('Napkins', 2, 3),
+  ('Plates', 2, 3);
 
 INSERT INTO general_items (item, user_id, list_id)
 VALUES
