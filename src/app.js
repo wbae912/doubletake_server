@@ -10,6 +10,7 @@ const generalRouter = require('../src/general/general-router');
 const eventRouter = require('../src/events/events-router');
 const generalItemsRouter = require('../src/generalItems/generalItems-router');
 const eventItemsRouter = require('../src/eventItems/eventItems-router');
+const weatherRouter = require('../src/weather/weather-router');
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use('/api/general', generalRouter);
 app.use('/api/event', eventRouter);
 app.use('/api/generalItems', generalItemsRouter);
 app.use('/api/eventItems', eventItemsRouter);
+app.use('/api/weather', weatherRouter);
 
 app.use(function errorHandler(error, req, res, next) {
   let response;

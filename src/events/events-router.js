@@ -11,6 +11,12 @@ const serializeEvent = event => ({
   id: event.id,
   title: xss(event.title),
   date_of_event: event.date_of_event,
+  city: xss(event.city),
+  state: xss(event.state),
+  country: xss(event.country),
+  weather_summary: event.weather_summary,
+  weather_icon: event.weather_icon,
+  temperature: event.temperature,
   user_id: event.user_id
 });
 
@@ -26,7 +32,7 @@ eventRouter
       .catch(next);
   })
   .post(requireAuth, jsonParser, (req,res,next) => {
-    const { title, date_of_event } = req.body;
+    const { title, date_of_event, city, state, country, weather_summary, weather_icon, temperature } = req.body;
     const newEvent = { title, date_of_event };
 
     newEvent.user_id = req.user.id;
@@ -36,6 +42,14 @@ eventRouter
         return res.status(400).json({error: `Missing ${key} in request body`});
       }
     }
+
+    // Adding properties after validation because these are not required fields...NOTE: that user_id is required, which is why the property is added before validation
+    newEvent.city = city;
+    newEvent.state = state;
+    newEvent.country = country;
+    newEvent.weather_summary = weather_summary;
+    newEvent.weather_icon = weather_icon;
+    newEvent.temperature = temperature;
 
     const db = req.app.get('db');
     EventsService.postEvent(db,newEvent)
