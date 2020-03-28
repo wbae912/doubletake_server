@@ -94,13 +94,20 @@ eventRouter
       .catch(next);
   })
   .patch(jsonParser, (req,res,next) => {
-    const { title, date_of_event } = req.body;
+    const { title, date_of_event, city, state, country, weather_summary, weather_icon, temperature } = req.body;
     const editEvent = { title, date_of_event };
 
     const numberOfValues = Object.values(editEvent).filter(Boolean).length;
     if(numberOfValues === 0) {
       return res.status(400).json({error: 'Request body must contain either title or date_of_event'});
     }
+
+    editEvent.city = city;
+    editEvent.state = state;
+    editEvent.country = country;
+    editEvent.weather_summary = weather_summary;
+    editEvent.weather_icon = weather_icon;
+    editEvent.temperature = temperature;
 
     const db = req.app.get('db');
     const id = req.params.id;
