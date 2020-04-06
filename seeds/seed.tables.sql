@@ -12,12 +12,12 @@ VALUES
   ('test1@test.com', 'user2', '$2a$12$4dY7PW6aQRtt50x7dArb0uBfvps.vkeds4WiWxGtW.b23UvpE9hQ2'), -- Password = Admin123!
   ('test2@test.com', 'user3', '$2a$12$4dY7PW6aQRtt50x7dArb0uBfvps.vkeds4WiWxGtW.b23UvpE9hQ2'); -- Password = Admin123!
 
-INSERT INTO events (title, date_of_event, city, state, country, weather_summary, weather_icon, temperature, user_id)
+INSERT INTO events (title, date_of_event, city, state, country, user_id)
 VALUES
-  ('Event 1', '2020-02-10', 'La Canada', 'CA', 'US', 'Clear', 'clear-night', 43.88, 1),
-  ('Event 2', '2020-03-05', 'Los Angeles', 'CA', 'US', 'Clear', 'clear-night', 43.88, 1),
-  ('Event 3', '2020-04-12', 'Tokyo', NULL, 'Japan', 'Partly Cloudy', 'cloudy', 56.28, 2),
-  ('Event 4', '2020-05-25', 'Seoul', NULL, 'South Korea', 'Clear', 'clear-night', 43.88, 3);
+  ('Event 1', '2020-02-10', 'La Canada', 'CA', 'US', 1),
+  ('Event 2', '2020-03-05', 'Los Angeles', 'CA', 'US', 1),
+  ('Event 3', '2020-04-12', 'Tokyo', NULL, 'Japan', 2),
+  ('Event 4', '2020-05-25', 'Seoul', NULL, 'South Korea', 3);
 
 INSERT INTO general (title, user_id)
 VALUES

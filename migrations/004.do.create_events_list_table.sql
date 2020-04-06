@@ -4,8 +4,5 @@ CREATE TABLE events (
   date_of_event DATE NOT NULL,
   city TEXT DEFAULT NULL,
   state TEXT DEFAULT NULL,
-  country TEXT DEFAULT NULL,
-  weather_summary TEXT DEFAULT NULL,
-  weather_icon TEXT DEFAULT NULL,
-  temperature FLOAT DEFAULT NULL
+  country TEXT DEFAULT NULL
   );

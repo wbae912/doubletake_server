@@ -14,9 +14,6 @@ const serializeEvent = event => ({
   city: xss(event.city),
   state: xss(event.state),
   country: xss(event.country),
-  weather_summary: event.weather_summary,
-  weather_icon: event.weather_icon,
-  temperature: event.temperature,
   user_id: event.user_id
 });
 
@@ -32,7 +29,7 @@ eventRouter
       .catch(next);
   })
   .post(requireAuth, jsonParser, (req,res,next) => {
-    const { title, date_of_event, city, state, country, weather_summary, weather_icon, temperature } = req.body;
+    const { title, date_of_event, city, state, country } = req.body;
     const newEvent = { title, date_of_event };
 
     newEvent.user_id = req.user.id;
@@ -47,9 +44,6 @@ eventRouter
     newEvent.city = city;
     newEvent.state = state;
     newEvent.country = country;
-    newEvent.weather_summary = weather_summary;
-    newEvent.weather_icon = weather_icon;
-    newEvent.temperature = temperature;
 
     const db = req.app.get('db');
     EventsService.postEvent(db,newEvent)
@@ -94,20 +88,13 @@ eventRouter
       .catch(next);
   })
   .patch(jsonParser, (req,res,next) => {
-    const { title, date_of_event, city, state, country, weather_summary, weather_icon, temperature } = req.body;
-    const editEvent = { title, date_of_event };
+    const { title, date_of_event, city, state, country } = req.body;
+    const editEvent = { title, date_of_event, city, state, country };
 
     const numberOfValues = Object.values(editEvent).filter(Boolean).length;
     if(numberOfValues === 0) {
       return res.status(400).json({error: 'Request body must contain either title or date_of_event'});
     }
-
-    editEvent.city = city;
-    editEvent.state = state;
-    editEvent.country = country;
-    editEvent.weather_summary = weather_summary;
-    editEvent.weather_icon = weather_icon;
-    editEvent.temperature = temperature;
 
     const db = req.app.get('db');
     const id = req.params.id;
