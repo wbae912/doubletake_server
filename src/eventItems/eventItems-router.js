@@ -11,6 +11,7 @@ const serializeItem = item => ({
   id: item.id,
   item: xss(item.item),
   checked: item.checked,
+  quantity: item.quantity,
   user_id: item.user_id,
   list_id: item.list_id
 });
@@ -76,14 +77,18 @@ eventItemsRouter
   .patch(jsonParser, (req,res,next) => {
     const db = req.app.get('db');
     const id = req.params.id;
-    const { item, checked } = req.body;
+    const { item, checked, quantity } = req.body;
 
     const numberOfValues = Object.values(item).filter(Boolean).length;
     if(numberOfValues === 0) {
-      return res.status(400).json({error: 'Request body must contain item or checked'});
+      return res.status(400).json({error: 'Request body must contain item'});
     }
 
-    const editItem = { item, checked };
+    if(quantity < 1) {
+      return res.status(400).json({error: 'Quantity must be at least 1'});
+    }
+
+    const editItem = { item, checked, quantity };
 
     EventItemsService.editItem(db, editItem, id)
       .then(() => {
