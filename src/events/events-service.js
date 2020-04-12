@@ -4,7 +4,7 @@ const EventsService = {
       .select('*')
       .from('events')
       .where( {user_id} )
-      .orderBy('id', 'ASC');
+      .orderBy('id', 'DESC');
   },
 
   getSpecificEventForUser(db,id,user_id) {

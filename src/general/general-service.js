@@ -3,7 +3,8 @@ const GeneralService = {
     return db
       .select('*')
       .from('general')
-      .where( {user_id} ); 
+      .where( {user_id} )
+      .orderBy('id', 'DESC'); 
   },
 
   getSpecificListForUser(db, id, user_id) {
