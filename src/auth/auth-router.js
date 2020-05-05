@@ -10,10 +10,10 @@ authRouter
     const loginUser = { username, password };
 
     if(!username) {
-      return res.status(400).json({error: 'Missing username in request body'});
+      return res.status(400).json({error: 'Missing username'});
     }
     if(!password) {
-      return res.status(400).json({error: 'Missing password in request body'});
+      return res.status(400).json({error: 'Missing password'});
     }
 
     const db = req.app.get('db');

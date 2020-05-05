@@ -10,13 +10,13 @@ userRouter
     const { password, username, email } = req.body;
 
     if(!password) {
-      return res.status(400).json({error: 'Missing password in request body'});
+      return res.status(400).json({error: 'Missing password'});
     }
     if(!username) {
-      return res.status(400).json({error: 'Missing username in request body'});
+      return res.status(400).json({error: 'Missing username'});
     }
     if(!email) {
-      return res.status(400).json({error: 'Missing email in request body'});
+      return res.status(400).json({error: 'Missing email'});
     }
 
     const passwordError = UserService.validatePassword(password);
