@@ -26,9 +26,12 @@ userRouter
     }
 
     const db = req.app.get('db');
-    UserService.hasUserWithUserName(db, username)
-      .then(userExists => {
-        if(userExists) {
+    UserService.hasUserWithUserName(db, username, email)
+      .then(userInfo => {
+        if(userInfo && userInfo.email === email) {
+          return res.status(400).json({error: 'Email is taken'});
+        }
+        if(userInfo && userInfo.username === username) {
           return res.status(400).json({error: 'Username already exists'});
         }
         return UserService.hashPassword(password)

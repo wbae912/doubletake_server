@@ -5,12 +5,12 @@ const xss = require('xss');
 const REGEX = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[#$@!%&*?])/; // At least one uppercase, lowercase, numerical, AND special character
 
 const UserService = {
-  hasUserWithUserName(db, username) {
+  hasUserWithUserName(db, username, email) {
     return db
       .from('users')
       .where({username})
-      .first()
-      .then(user => !!user);
+      .orWhere({email})
+      .first();
   },
 
   insertUser(db, newUser) {
