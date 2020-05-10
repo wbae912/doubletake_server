@@ -14,7 +14,7 @@ const serializeLocation = location => ({
 
 weatherRouter
   .route('/')
-  .get(requireAuth, (req,res,next) => {
+  .get(requireAuth, async (req,res,next) => {
     const { city, state, country } = req.query;
     const locationObject = { city, state, country };
     serializeLocation(locationObject);
@@ -24,62 +24,62 @@ weatherRouter
 
     // Added maxResults parameter of "5" to limit too large of data retrieved
     const mapquest_api_url = `http://www.mapquestapi.com/geocoding/v1/address?key=${MAPQUEST_API_KEY}&location=${location}&maxResults=5`;
-    // let map_response = await fetch(mapquest_api_url);
-    // let map_data = await map_response.json();
-    fetch(mapquest_api_url, {
-      method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Origin, x-access-token, x-user-pathway, x-mongo-key, X-Requested-With, Content-Type, Accept',
-        'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, DELETE, PUT'
-      }
-    })
-      .then(res => {
-        if(!res.ok) {
-          return res.json().then(err => Promise.reject(err));
-        }
-        return res.json();
-      })
-      .then(data => {
-        let latitude = data.results[0].locations[0].latLng.lat;
-        let longitude = data.results[0].locations[0].latLng.lng;
-        return res.status(200).json(data);
-      })
-        // return fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${WEATHERMAP_API_KEY}&units=imperial`, {
-        //   method: 'GET',
-        //   headers: {
-        //     'content-type': 'application/json',
-        //     'Access-Control-Allow-Origin': '*',
-        //     'Access-Control-Allow-Headers': 'Origin, x-access-token, x-user-pathway, x-mongo-key, X-Requested-With, Content-Type, Accept',
-        //     'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, DELETE, PUT'
-        //   }
-        // })
-        //   .then(res => {
-        //     if(!res.ok) {
-        //       return res.json().then(err => Promise.reject(err));
-        //     }
-        //     return res.json();
-        //   })
-        //   .then(data => {
-        //     return res.status(200).json(data);
-        //   })
-          .catch(next);
-      });
+    let map_response = await fetch(mapquest_api_url);
+    let map_data = await map_response.json();
 
+    if(map_data.info.statuscode === 400) {
+      return res.status(400).json({error: 'Illegal argument from request'});
+    }
 
-    // if(map_data.info.statuscode === 400) {
-    //   return res.status(400).json({error: 'Illegal argument from request'});
-    // }
+    let latitude = map_data.results[0].locations[0].latLng.lat;
+    let longitude = map_data.results[0].locations[0].latLng.lng;
 
-    // let latitude = map_data.results[0].locations[0].latLng.lat;
-    // let longitude = map_data.results[0].locations[0].latLng.lng;
+    const weather_api_url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${WEATHERMAP_API_KEY}&units=imperial`;
+    const weather_response = await fetch(weather_api_url);
+    const weather_data = await weather_response.json();
 
-    // const weather_api_url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${WEATHERMAP_API_KEY}&units=imperial`;
-    // const weather_response = await fetch(weather_api_url);
-    // const weather_data = await weather_response.json();
-
-    // return res.status(200).json(weather_data);
+    return res.status(200).json(weather_data);
   });
 
 module.exports = weatherRouter;
+
+
+// BACKUP:
+// fetch(mapquest_api_url, {
+//   method: 'GET',
+//   headers: {
+//     'content-type': 'application/json',
+//     'Access-Control-Allow-Origin': '*',
+//     'Access-Control-Allow-Headers': 'Origin, x-access-token, x-user-pathway, x-mongo-key, X-Requested-With, Content-Type, Accept',
+//     'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, DELETE, PUT'
+//   }
+// })
+//   .then(res => {
+//     if(!res.ok) {
+//       return res.json().then(err => Promise.reject(err));
+//     }
+//     return res.json();
+//   })
+//   .then(data => {
+//     let latitude = data.results[0].locations[0].latLng.lat;
+//     let longitude = data.results[0].locations[0].latLng.lng;
+//     return fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${WEATHERMAP_API_KEY}&units=imperial`, {
+//       method: 'GET',
+//       headers: {
+//         'content-type': 'application/json',
+//         'Access-Control-Allow-Origin': '*',
+//         'Access-Control-Allow-Headers': 'Origin, x-access-token, x-user-pathway, x-mongo-key, X-Requested-With, Content-Type, Accept',
+//         'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, DELETE, PUT'
+//       }
+//     })
+//       .then(res => {
+//         if(!res.ok) {
+//           return res.json().then(err => Promise.reject(err));
+//         }
+//         return res.json();
+//       })
+//       .then(data => {
+//         return res.status(200).json(data);
+//       })
+//       .catch(next);
+//   });
