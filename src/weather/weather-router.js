@@ -27,6 +27,9 @@ weatherRouter
     let map_response = await fetch(mapquest_api_url);
     let map_data = await map_response.json();
 
+
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', '*');
     if(map_data.info.statuscode === 400) {
       return res.status(400).json({error: 'Illegal argument from request'});
     }
