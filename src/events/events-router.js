@@ -36,7 +36,7 @@ eventRouter
 
     for(let [key,value] of Object.entries(newEvent)) {
       if(!value) {
-        return res.status(400).json({error: `Missing ${key} in request body`});
+        return res.status(400).json({error: `Missing ${key}`});
       }
     }
 
@@ -93,7 +93,7 @@ eventRouter
 
     const numberOfValues = Object.values(editEvent).filter(Boolean).length;
     if(numberOfValues === 0) {
-      return res.status(400).json({error: 'Request body must contain either title or date_of_event'});
+      return res.status(400).json({error: 'Please provide either title or date of event'});
     }
 
     const db = req.app.get('db');

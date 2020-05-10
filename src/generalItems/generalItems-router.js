@@ -37,7 +37,7 @@ generalItemsRouter
     const { item } = req.body;
 
     if(!item) {
-      return res.status(400).json({error: 'Item is required in the body'});
+      return res.status(400).json({error: 'Item is required'});
     }
 
     const newItem = { item };
@@ -82,11 +82,11 @@ generalItemsRouter
 
     const numberOfValues = Object.values(item).filter(Boolean).length;
     if(numberOfValues === 0) {
-      return res.status(400).json({error: 'Request body must contain item'});
+      return res.status(400).json({error: 'Item is required'});
     }
     
     if(quantity < 1) {
-      return res.status(400).json({error: 'Quantity must be at least 1'});
+      return res.status(400).json({error: 'Enter a quantity greater than 0'});
     }
 
     const editItem = { item, checked, quantity };
